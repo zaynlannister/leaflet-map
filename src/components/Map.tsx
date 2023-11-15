@@ -1,16 +1,42 @@
 import React from "react";
-import { MapContainer, TileLayer } from "react-leaflet";
+import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import UzbFeatureMap from "./UzbFeatureMap";
 import GeomanMultiple from "./Geoman/GeomanMultiple";
 import type { FeatureCollection } from "geojson";
+import { SearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
 
 export const GEOJSON: FeatureCollection = {
   type: "FeatureCollection",
   features: [],
 };
 
+const GeoSearchComponent = () => {
+  const map = useMap();
+
+  React.useEffect(() => {
+    //@ts-ignore
+    const searchControl = new SearchControl({
+      provider: new OpenStreetMapProvider(),
+      style: "bar",
+    });
+
+    map.addControl(searchControl);
+
+    return () => {
+      map.removeControl(searchControl);
+    };
+  }, [map]);
+
+  return null;
+};
+
 const Map = () => {
   const [geoJson, setGeoJsoN] = React.useState<FeatureCollection>(GEOJSON);
+  // @ts-ignore
+  const searchControl = new SearchControl({
+    provider: new OpenStreetMapProvider(),
+    style: "bar",
+  });
 
   return (
     <MapContainer
@@ -32,6 +58,7 @@ const Map = () => {
         cutPolygon={false}
         drawPolygon={true}
       />
+      <GeoSearchComponent />
     </MapContainer>
   );
 };

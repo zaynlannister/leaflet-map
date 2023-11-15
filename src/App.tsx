@@ -3,11 +3,9 @@ import Map from "./components/Map";
 
 const App = () => {
   return (
-    <>
-      <StyledMapBox>
-        <Map />
-      </StyledMapBox>
-    </>
+    <StyledMapBox>
+      <Map />
+    </StyledMapBox>
   );
 };
 
